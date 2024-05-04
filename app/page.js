@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Page = () => {
   const [task, setTask] = useState('');
@@ -9,6 +9,21 @@ const Page = () => {
   const [editDesc, setEditDesc] = useState('');
   const [maintask, setMaintask] = useState([]);
 
+
+ useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (storedTasks) {
+      setMaintask(storedTasks);
+    }
+  }, []);
+
+  // Update local storage whenever maintask changes
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(maintask));
+  }, [maintask]);
+
+
+  
   const submitHandler = (e) => {
     e.preventDefault();
     setMaintask([...maintask, { task, desc }]);
